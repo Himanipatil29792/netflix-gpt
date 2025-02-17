@@ -3,14 +3,15 @@ import Header from './Header';
 import {checkValidData} from '../utils/Validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/Firebase';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { addUser } from '../utils/userSlice';
+import { USER_AVATAR } from '../utils/constants';
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm]=useState(true);
   const [errorMessage, setErrorMessage]=useState(null);
-  const navigate= useNavigate();
+  // const navigate= useNavigate();
   const dispatch=useDispatch();
 
   const name1=useRef(null);
@@ -41,14 +42,14 @@ const handleButtonClick = () =>{
           // console.log(user);
           // navigate("/browse");
           updateProfile(auth.currentUser, {
-            displayName: name1.current.value, photoURL: "https://help.nflxext.com/helpcenter/OneTrust/oneTrust_production/consent/87b6a5c0-0104-4e96-a291-092c11350111/01938dc4-59b3-7bbc-b635-c4131030e85f/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+            displayName: name1.current.value, photoURL:USER_AVATAR,
           }).then(() => {
             const {uid, email, displayName, photoURL} = auth.currentUser;
                           dispatch(addUser({uid:uid, email: email, displayName: displayName, photoURL:photoURL,}));
               //console.log(user);
 
 
-              navigate("/browse");
+              // navigate("/browse");
           }).catch((error) => {
             // An error occurred
             setErrorMessage(error.message);
@@ -67,8 +68,8 @@ const handleButtonClick = () =>{
           .then((userCredential) => {
     
               const user = userCredential.user;
-              console.log(user);
-              navigate("/browse");
+              // console.log(user);
+              // navigate("/browse");
           })
           .catch((error) => {
               const errorCode = error.code;
