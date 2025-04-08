@@ -14,7 +14,11 @@ const Login = () => {
   // const navigate= useNavigate();
   const dispatch=useDispatch();
 
-  const name1=useRef(null);
+  const toggleSignForm = () =>{
+    setIsSignInForm(!isSignInForm);
+  }
+
+  const fullname=useRef(null);
   const email=useRef(null);
   const password=useRef(null);
 
@@ -22,15 +26,18 @@ const handleButtonClick = () =>{
     // Validate the form data
     //checkValidData(email,password);
 
-    console.log(name1.current.value);
-    console.log(email.current.value);
-    console.log(password.current.value);
+    //console.log(fullname.current.value);
+    //console.log(email.current.value);
+    //console.log(password.current.value);
 
-     const message=checkValidData(name1.current.value, email.current.value, password.current.value);
+     const message=checkValidData(email.current.value, 
+      password.current.value, 
+      !isSignInForm ? fullname.current.value : undefined // Only pass fullname in Sign-up mode
+     );
      //console.log(message);
-     setErrorMessage(message);
+     setErrorMessage(message !== true ? message : null);
 
-     if(message) return;
+     if(message) 
 
      //Sign In / Sign Up
      if(!isSignInForm){
@@ -42,7 +49,7 @@ const handleButtonClick = () =>{
           // console.log(user);
           // navigate("/browse");
           updateProfile(auth.currentUser, {
-            displayName: name1.current.value, photoURL:USER_AVATAR,
+            displayName: fullname.current.value, photoURL:USER_AVATAR,
           }).then(() => {
             const {uid, email, displayName, photoURL} = auth.currentUser;
                           dispatch(addUser({uid:uid, email: email, displayName: displayName, photoURL:photoURL,}));
@@ -80,31 +87,38 @@ const handleButtonClick = () =>{
      }
   }
 
-  const toggleSignForm = () =>{
-    setIsSignInForm(!isSignInForm);
-  }
-
   return (
-    <div>
+    <div className='relative w-full h-screen'>
     <Header />
-    <div className="absolute">
-        <img src="https://assets.nflxext.com/ffe/siteui/vlv3/638e9299-0637-42d1-ba39-54ade4cf2bf6/web/IN-en-20250203-TRIFECTA-perspective_46eb8857-face-4ea6-b901-dbf22b461369_medium.jpg" alt="background" />
+    <div className="absolute inset-0">
+        <img className='w-full h-full object-cover' src="https://assets.nflxext.com/ffe/siteui/vlv3/638e9299-0637-42d1-ba39-54ade4cf2bf6/web/IN-en-20250203-TRIFECTA-perspective_46eb8857-face-4ea6-b901-dbf22b461369_medium.jpg" alt="background" />
+         {/* Black Overlay */}
+         <div className="absolute inset-0 bg-black bg-opacity-100 md:opacity-60 "></div>
     </div>
-    <form onSubmit={(e)=> e.preventDefault()} className="bg-black text-white p-12 w-3/12 absolute mx-auto right-0 left-0 my-36 bg-opacity-80 rounded-lg">
-        <h1 className="font-bold text-3xl py-5">{isSignInForm ? "Sign In" : "Sign Up"}</h1>
-        {/* {
-          !isSignInForm && (         */}
-            <input ref={name1} type="text" placeholder='Full Name' className='p-4 my-4 w-full bg-gray-600 rounded-lg' />
-          {/* )
-        } */}
-        <input ref={email} type="text" placeholder='Email Address' className='p-4 my-4 w-full bg-gray-600 rounded-lg' />
-        <input ref={password} type="password" placeholder='Password' className='p-4 my-4 w-full bg-gray-600 rounded-lg' />
+    <form onSubmit={(e)=> e.preventDefault()} className="absolute p-8 bg-opacity-80 bg-black w-full max-w-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-10">
+      
+        <h2 className="text-3xl  text-white mb-6 space-x-4 ">
+          {isSignInForm ? "Sign In" : "Sign Up"}
+        </h2>
+        {!isSignInForm && (        
+            <input ref={fullname} type="text" placeholder='Full Name' className='py-2 px-4 mb-5 w-full bg-gray-800 bg-opacity-50 text-white placeholder-gray-300 border border-gray-500 rounded focus:outline-none focus:ring-1 focus:ring-white' />
+        
+        )} 
+       
+        <input ref={email} type="text" placeholder='Email Address' className='py-2 px-4 mb-5 w-full bg-gray-800 bg-opacity-50 text-white placeholder-gray-300 border border-gray-500 rounded focus:outline-none focus:ring-1 focus:ring-white' />
+        <input ref={password} type="password" placeholder='Password' className='py-2 px-4 mb-5 w-full bg-gray-800 bg-opacity-50 text-white placeholder-gray-300 border border-gray-500 rounded focus:outline-none focus:ring-1 focus:ring-white' />
         <p className="text-red-700 font-bold">{errorMessage}</p>
-        <button className='p-4 my-5 w-full bg-red-700 rounded-lg' onClick={handleButtonClick}>{
+        <button className='py-2 px-4 mb-4 w-full bg-red-600  text-white rounded text-lg active:scale-95 transition' onClick={handleButtonClick}>{
           isSignInForm ? "Sign In" : "Sign Up"
         }</button>
-        <p className='py-4 cursor-pointer' onClick={toggleSignForm}>
-          {isSignInForm ? "New to Netflix? Sign Up now." : "Already registered? Sign In"}
+        <p className='text-gray-300 font-kfom cursor-pointer' onClick={toggleSignForm}>
+          {isSignInForm ?   <>
+              New to Netflix <span className="text-white font-bold">Sign up now.</span>
+            </> :
+            <>
+              Already have an account?{" "}
+              <span className="text-white font-bold">Sign In now.</span>
+            </>}
         </p>
     </form>
     </div>

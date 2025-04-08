@@ -35,13 +35,9 @@ const Body = () => {
     // },[]);
 
   return (
-    <div>
-        {/* <Login />
-        <Browse /> */}
-
         <RouterProvider router={appRouter} />
-    </div>
   )
 }
 
 export default Body
+

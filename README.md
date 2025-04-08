@@ -30,6 +30,8 @@
 - Embedded the YouTube video & make it autoplay and mute
 - Tailwind classes to make Main Container look awesome
 
+- GPT Search Feature
+
 # Features
 - Login/ Sign Up
     - Sign In / Sign Up Form

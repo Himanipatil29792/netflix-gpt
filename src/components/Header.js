@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../utils/userSlice";
 import { LOGO } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
 
 const Header = () => {
   const dispatch=useDispatch();
@@ -42,14 +43,21 @@ const Header = () => {
             return () => unsubscribe();
       },[]);
 
+    
+    const handleGptSearchClick = () =>{
+      // Toggle GPT Search
+      dispatch(toggleGptSearchView());
+    }
+
   return (
-    <div className='flex justify-between absolute w-full px-8 py-2 from-black bg-gradient-to-b z-10'>
-        <img className='w-48' src={LOGO} alt="logo"/>
+    <div className='fixed z-10 px-32 w-full bg-gradient-to-t from-transparent to-black flex justify-between items-center py-4'>
+        <img className='w-44' src={LOGO} alt="logo"/>
 
       { user && (
-        <div className='flex p-4'>
-          <img className='w-12 h-12' src={user?.photoURL} alt="usericon"/>
-          <button onClick={handleClickSignOut} className="ml-3 font-bold text-white">Signout</button>
+        <div className='flex gap-3 items-center'>
+        <button className="py-2 px-4 m-2 bg-purple-600 text-white rounded-xl" onClick={handleGptSearchClick}>GPT Search</button>
+          <img className='w-10 h-10' src={user?.photoURL} alt="usericon"/>
+          <button onClick={handleClickSignOut} className="text-white font-bold font-kfom">Signout</button>
         </div>
       )}
        
