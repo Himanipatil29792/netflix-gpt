@@ -7,6 +7,7 @@ import { auth } from '../utils/Firebase';
 import { useDispatch } from "react-redux";
 import { addUser } from '../utils/userSlice';
 import { USER_AVATAR } from '../utils/constants';
+import { BG_URL } from '../utils/constants';
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm]=useState(true);
@@ -91,7 +92,7 @@ const handleButtonClick = () =>{
     <div className='relative w-full h-screen'>
     <Header />
     <div className="absolute inset-0">
-        <img className='w-full h-full object-cover' src="https://assets.nflxext.com/ffe/siteui/vlv3/638e9299-0637-42d1-ba39-54ade4cf2bf6/web/IN-en-20250203-TRIFECTA-perspective_46eb8857-face-4ea6-b901-dbf22b461369_medium.jpg" alt="background" />
+        <img className='w-full h-full object-cover' src={BG_URL} alt="background" />
          {/* Black Overlay */}
          <div className="absolute inset-0 bg-black bg-opacity-100 md:opacity-60 "></div>
     </div>
